@@ -1,0 +1,4 @@
+offline.token
+.env
+results/
+.task/

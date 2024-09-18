@@ -1,0 +1,79 @@
+---
+version: '3'
+
+dotenv:
+  - '.env'
+
+env:
+  IMAGE: localhost/smoke-test-experiments
+  TAG: latest
+  GLOBAL_PODMAN_OPTS: -it --rm --userns=keep-id --security-opt label=disable
+
+tasks:
+  test:
+    desc: Run tests using the robot command
+    summary: |
+      This task runs the robot command to execute the tests.
+
+      The task mounts the current directory to the container and runs the tests
+      using the robot command. The task also mounts the minder binary, the minder
+      configuration file, and the offline token file to the container if they are
+      available in the current directory.
+
+      Available variables:
+      
+      - MINDER_BINARY_PATH: The path to the minder binary. If not provided, the
+        task will try to find the minder binary in the system.
+      - MINDER_CONFIG: The path to the minder configuration file. If not provided,
+        the task will use the default configuration file in the current directory
+        (./config.yaml).
+      - MINDER_OFFLINE_TOKEN_PATH: The path to the offline token file. If not provided,
+        the task will use the default offline token file in the current directory
+        (./offline.token).
+      - CLI_ARGS: Additional arguments to pass to the robot command.
+    deps:
+      - build
+    cmds:
+      - |
+        podman run $GLOBAL_PODMAN_OPTS \
+          -v ./:$CTESTDIR \
+          -v {{._MINDER_BINARY_PATH}}:/usr/bin/minder \
+          -v {{.MINDER_CONFIG | default "./config.yaml" }}:/etc/minder/config.yaml \
+          -v {{.MINDER_OFFLINE_TOKEN_PATH | default "./offline.token" }}:/opt/minder-offline.token \
+          --mount type=tmpfs,destination=/.config \
+          -e MINDER_OFFLINE_TOKEN_PATH=/opt/minder-offline.token \
+          -e MINDER_CONFIG=/etc/minder/config.yaml \
+          $IMAGE:$TAG \
+          --outputdir $CTESTDIR/results \
+          {{if .CLI_ARGS}} {{.CLI_ARGS}}{{end}} $CTESTDIR/tests
+    env:
+      CTESTDIR: /robottests
+    vars:
+      _MINDER_BINARY_PATH:
+        sh: '{{if .MINDER_BINARY_PATH}} echo {{.MINDER_BINARY_PATH}} {{else}} which minder {{end}}'
+    preconditions:
+      - sh: test -f {{._MINDER_BINARY_PATH}}
+        msg: "The minder binary is missing. Please provide the path to the minder binary and try again."
+      - sh: test -f {{.MINDER_OFFLINE_TOKEN_PATH | default "./offline.token" }}
+        msg: "The offline token file is missing. Please create the offline token file and try again."
+      - sh: test -f {{.MINDER_CONFIG | default "./config.yaml" }}
+        msg: "The minder configuration file is missing. Please create the configuration file and try again."
+
+  build:
+    desc: Build the smoke test image
+    cmds:
+      - "podman build -t $IMAGE:$TAG ."
+    sources:
+      - Dockerfile
+      - requirements.txt
+    status:
+      - "podman image exists $IMAGE:$TAG"
+
+  robot-help:
+    desc: Get help for the robot command
+    deps:
+      - build
+    cmds:
+      - "podman run $GLOBAL_PODMAN_OPTS $IMAGE:$TAG --help"
+    env:
+      CTESTDIR: /robottests

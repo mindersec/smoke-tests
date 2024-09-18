@@ -1,0 +1,4 @@
+robotframework==7.1
+robotframework-requests==0.9.7
+robotframework-datadriver==1.11.2
+sh==2.0.7
