@@ -107,6 +107,7 @@ tasks:
     cmds:
       - cmd: |
           source .venv/bin/activate
+          echo "Running flake8..."
           flake8 resources/
         silent: true
 
@@ -117,6 +118,7 @@ tasks:
     cmds:
       - cmd: |
           source .venv/bin/activate
+          echo "Running bandit..."
           bandit -q -r resources/
         silent: true
 
