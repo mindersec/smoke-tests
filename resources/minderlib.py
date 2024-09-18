@@ -11,7 +11,8 @@ except Exception:
 
 rf = BuiltIn()
 
-class MinderLibrary(object):
+# Note that the class name must match the file name
+class minderlib(object):
     def __init__(self):
         # cmd_output is a list of string identifiers that
         # tracks certain command outputs that have been

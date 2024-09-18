@@ -1,6 +1,6 @@
 *** Settings ***
 
-Library    MinderLibrary.py
+Library    resources/minderlib.py
 
 *** Variables ***
 

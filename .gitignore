@@ -1,4 +1,12 @@
-offline.token
-.env
-results/
+# .task is a directory that contains the task runtime data
 .task/
+# .env is a file containing a developer's local environment variables
+.env
+# offline.token is a file containing the developer's offline token
+# this should NOT be checked into source control.
+offline.token
+# results/ is a directory that contains the results of the task run
+results/
+# ignore __pycache__ directories
+__pycache__/
+
