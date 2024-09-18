@@ -20,7 +20,7 @@ jobs:
           python-version: 3.12
 
       - name: Setup task
-        uses: arduino/setup-task@2.0.0
+        uses: arduino/setup-task@v2
 
       - name: Run lint
         run: task lint-flake8
@@ -37,7 +37,7 @@ jobs:
           python-version: 3.12
 
       - name: Setup task
-        uses: arduino/setup-task@2.0.0
+        uses: arduino/setup-task@v2
 
       - name: Run static analysis
         run: task lint-bandit
