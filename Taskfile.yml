@@ -7,7 +7,10 @@ dotenv:
 env:
   IMAGE: localhost/smoke-test-experiments
   TAG: latest
-  GLOBAL_PODMAN_OPTS: -it --rm --userns=keep-id --security-opt label=disable
+
+vars:
+  _GLOBAL_CONTAINER_OPTS: -it --rm
+  _PODMAN_OPTS: --userns=keep-id --security-opt label=disable
 
 tasks:
   test:
@@ -31,11 +34,19 @@ tasks:
         the task will use the default offline token file in the current directory
         (./offline.token).
       - CLI_ARGS: Additional arguments to pass to the robot command.
+    cmds:
+      - task: test-podman-or-docker
+        vars:
+          _CONTAINER_CMD:
+            sh: "which podman || which docker"
+
+  test-podman-or-docker:
+    internal: true
     deps:
       - build
     cmds:
       - |
-        podman run $GLOBAL_PODMAN_OPTS \
+        {{._CONTAINER_CMD}} run {{._CONTAINER_OPTS}} \
           -v ./:$CTESTDIR \
           -v {{._MINDER_BINARY_PATH}}:/usr/bin/minder \
           {{if .MINDER_CONFIG}} -v {{.MINDER_CONFIG}}:/etc/minder/config.yaml {{end}} \
@@ -47,11 +58,15 @@ tasks:
           --outputdir $CTESTDIR/results \
           --pythonpath $CTESTDIR \
           {{if .CLI_ARGS}} {{.CLI_ARGS}}{{end}} $CTESTDIR/minder-tests
+    requires:
+      vars:
+        - _CONTAINER_CMD
     env:
       CTESTDIR: /robottests
     vars:
       _MINDER_BINARY_PATH:
         sh: '{{if .MINDER_BINARY_PATH}} echo {{.MINDER_BINARY_PATH}} {{else}} which minder {{end}}'
+      _CONTAINER_OPTS: '{{._GLOBAL_CONTAINER_OPTS}} {{if ._CONTAINER_CMD | contains "podman"}} {{._PODMAN_OPTS}} {{end}}'
     preconditions:
       - sh: test -f {{._MINDER_BINARY_PATH}}
         msg: "The minder binary is missing. Please provide the path to the minder binary and try again."
@@ -63,18 +78,17 @@ tasks:
   build:
     desc: Build the smoke test image
     cmds:
-      - "podman build -t $IMAGE:$TAG ."
+      - task: build-docker-or-podman
+        vars:
+          _CONTAINER_CMD:
+            sh: "which podman || which docker"
+
+  build-docker-or-podman:
+    internal: true
+    cmds:
+      - "{{._CONTAINER_CMD}} build -t $IMAGE:$TAG ."
     sources:
       - Dockerfile
       - requirements.txt
     status:
       - "podman image exists $IMAGE:$TAG"
-
-  robot-help:
-    desc: Get help for the robot command
-    deps:
-      - build
-    cmds:
-      - "podman run $GLOBAL_PODMAN_OPTS $IMAGE:$TAG --help"
-    env:
-      CTESTDIR: /robottests
