@@ -45,7 +45,7 @@ tasks:
           -e MINDER_CONFIG=/etc/minder/config.yaml \
           $IMAGE:$TAG \
           --outputdir $CTESTDIR/results \
-          {{if .CLI_ARGS}} {{.CLI_ARGS}}{{end}} $CTESTDIR/tests
+          {{if .CLI_ARGS}} {{.CLI_ARGS}}{{end}} $CTESTDIR/minder-tests
     env:
       CTESTDIR: /robottests
     vars:
