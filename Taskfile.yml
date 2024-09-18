@@ -130,7 +130,6 @@ tasks:
           python -m venv .venv
         silent: true
       - cmd: |
-          set -x
           echo "* Activating the virtual environment..."
           source .venv/bin/activate
 

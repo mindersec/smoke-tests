@@ -19,12 +19,13 @@ jobs:
         with:
           python-version: 3.12
 
-      - name: Setup task
-        uses: arduino/setup-task@v2
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
 
-      - name: Run lint
-        run: task lint-flake8 -v
-        shell: bash
+      - name: Run flake8
+        run: flake8 resources/
 
   static-analysis:
     runs-on: ubuntu-latest
@@ -37,9 +38,10 @@ jobs:
         with:
           python-version: 3.12
 
-      - name: Setup task
-        uses: arduino/setup-task@v2
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
 
       - name: Run static analysis
-        run: task lint-bandit -v
-        shell: bash
+        run: bandit -q -r resources/
