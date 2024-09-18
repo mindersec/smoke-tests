@@ -125,7 +125,7 @@ tasks:
   venv:
     desc: Create a virtual environment for python
     cmds:
-      - python3 -m venv .venv
+      - python -m venv .venv
       - |
         echo "* Activating the virtual environment..."
         source .venv/bin/activate
@@ -147,5 +147,5 @@ tasks:
       - requirements.txt
       - requirements-dev.txt
     preconditions:
-      - sh: "python3 --version"
-        msg: "Python 3 is required to create the virtual environment. Please install Python 3 and try again."
+      - sh: "python --version"
+        msg: "Python is required to create the virtual environment. Please install Python 3 and try again."
