@@ -125,7 +125,9 @@ tasks:
   venv:
     desc: Create a virtual environment for python
     cmds:
-      - python -m venv .venv
+      - |
+        echo "* Creating a virtual environment..."
+        python -m venv .venv
       - |
         echo "* Activating the virtual environment..."
         source .venv/bin/activate
