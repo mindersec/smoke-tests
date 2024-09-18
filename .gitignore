@@ -9,4 +9,5 @@ offline.token
 results/
 # ignore __pycache__ directories
 __pycache__/
-
+# ignore .venv
+.venv/

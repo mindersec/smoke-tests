@@ -12,12 +12,21 @@ except Exception:
 
 rf = BuiltIn()
 
+#####################################################################
 # Constants
-MINDER_OFFLINE_TOKEN_PATH = 'MINDER_OFFLINE_TOKEN_PATH'
+#####################################################################
+
+# This is not a secret, but a path to a file that contains a secret
+MINDER_OFFLINE_TOKEN_PATH = 'MINDER_OFFLINE_TOKEN_PATH'  # nosec
 
 WHOAMI_OUT_KEY = 'whoami'
 PROVIDER_LIST_OUT_KEY = 'provider-list'
 PROJECT_LIST_OUT_KEY = 'project-list'
+
+
+#####################################################################
+# Library
+#####################################################################
 
 
 # Note that the class name must match the file name
