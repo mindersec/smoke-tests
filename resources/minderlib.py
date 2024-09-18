@@ -70,7 +70,7 @@ class minderlib(object):
         WHOAMI_OUT_KEY as the key.
         """
         logger.info('Getting user profile')
-        self.__cmd_output[WHOAMI_OUT_KEY] = minder.auth(WHOAMI_OUT_KEY)
+        self.__cmd_output[WHOAMI_OUT_KEY] = minder.auth('whoami')
         logger.info(self.__cmd_output[WHOAMI_OUT_KEY])
         return self.__cmd_output[WHOAMI_OUT_KEY]
 
