@@ -16,9 +16,9 @@ tasks:
       This task runs the robot command to execute the tests.
 
       The task mounts the current directory to the container and runs the tests
-      using the robot command. The task also mounts the minder binary, the minder
-      configuration file, and the offline token file to the container if they are
-      available in the current directory.
+      using the robot command. The task also mounts the minder binary, and the
+      offline token file to the container if they are available in the current directory.
+      The minder configuration file is only mounted if it is provided in the environment.
 
       Available variables:
       
@@ -38,7 +38,7 @@ tasks:
         podman run $GLOBAL_PODMAN_OPTS \
           -v ./:$CTESTDIR \
           -v {{._MINDER_BINARY_PATH}}:/usr/bin/minder \
-          -v {{.MINDER_CONFIG | default "./config.yaml" }}:/etc/minder/config.yaml \
+          {{if .MINDER_CONFIG}} -v {{.MINDER_CONFIG}}:/etc/minder/config.yaml {{end}} \
           -v {{.MINDER_OFFLINE_TOKEN_PATH | default "./offline.token" }}:/opt/minder-offline.token \
           --mount type=tmpfs,destination=/.config \
           -e MINDER_OFFLINE_TOKEN_PATH=/opt/minder-offline.token \
@@ -57,7 +57,7 @@ tasks:
         msg: "The minder binary is missing. Please provide the path to the minder binary and try again."
       - sh: test -f {{.MINDER_OFFLINE_TOKEN_PATH | default "./offline.token" }}
         msg: "The offline token file is missing. Please create the offline token file and try again."
-      - sh: test -f {{.MINDER_CONFIG | default "./config.yaml" }}
+      - sh: "{{if .MINDER_CONFIG}}test -f {{.MINDER_CONFIG}}{{else}} true {{end}}"
         msg: "The minder configuration file is missing. Please create the configuration file and try again."
 
   build:
