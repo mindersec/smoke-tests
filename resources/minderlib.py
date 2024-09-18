@@ -1,14 +1,8 @@
-from robot.api.deco import keyword
 from robot.api import logger
 from robot.libraries.BuiltIn import BuiltIn
 import json
 import os
-import sh
-import uuid
-try:
-    from sh import minder
-except Exception:
-    raise Exception('Minder CLI is not available')
+from sh import minder
 
 rf = BuiltIn()
 
@@ -62,11 +56,11 @@ class minderlib(object):
         token is stored in the MINDER_OFFLINE_TOKEN_PATH environment variable.
         """
         logger.info('Logging into minder')
-        if not MINDER_OFFLINE_TOKEN_PATH in os.environ:
-            raise Exception(f'%s env variable is not set' % MINDER_OFFLINE_TOKEN_PATH)
+        if MINDER_OFFLINE_TOKEN_PATH not in os.environ:
+            raise Exception(f'{MINDER_OFFLINE_TOKEN_PATH} env variable is not set')
         tokenpath = os.environ[MINDER_OFFLINE_TOKEN_PATH]
         if not tokenpath:
-            raise Exception(f'%s env variable is empty' % MINDER_OFFLINE_TOKEN_PATH)
+            raise Exception(f'{MINDER_OFFLINE_TOKEN_PATH} env variable is empty')
 
         logger.info(minder.auth('offline-token', 'use', '--file', tokenpath))
         return True
@@ -96,9 +90,9 @@ class minderlib(object):
         logger.info('Checking minder server')
         self.__assert_cmd_output(WHOAMI_OUT_KEY)
 
-        if not server in self.__cmd_output[WHOAMI_OUT_KEY]:
+        if server not in self.__cmd_output[WHOAMI_OUT_KEY]:
             raise Exception('No auth info available')
-        
+
         for line in self.__cmd_output[WHOAMI_OUT_KEY].splitlines():
             if server in line:
                 return True
@@ -133,7 +127,7 @@ class minderlib(object):
         self.__assert_cmd_output(PROVIDER_LIST_OUT_KEY)
 
         list_out = self.__cmd_output[PROVIDER_LIST_OUT_KEY]
-        if not 'providers' in list_out:
+        if 'providers' not in list_out:
             raise Exception('No providers found')
 
         for provider in list_out['providers']:
@@ -154,7 +148,7 @@ class minderlib(object):
         self.__assert_cmd_output(PROJECT_LIST_OUT_KEY)
 
         list_out = self.__cmd_output[PROJECT_LIST_OUT_KEY]
-        if not 'projects' in list_out:
+        if 'projects' not in list_out:
             raise Exception('No projects found')
 
         if len(list_out['projects']) > 0:
@@ -166,7 +160,7 @@ class minderlib(object):
     # Private methods / helpers
     #####################################################################
 
-    def __list_minder_resources(self, resource_type : str, output_key : str):
+    def __list_minder_resources(self, resource_type: str, output_key: str):
         """List Minder resources
 
         This method lists Minder resources of the specified type. The resource
@@ -180,7 +174,7 @@ class minderlib(object):
         return True
 
     def __assert_cmd_output(self, identifier: str):
-        if not identifier in self.__cmd_output:
+        if identifier not in self.__cmd_output:
             raise Exception(f'No {identifier} output available')
 
     @staticmethod
