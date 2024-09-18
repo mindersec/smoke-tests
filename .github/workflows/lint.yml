@@ -23,7 +23,7 @@ jobs:
         uses: arduino/setup-task@v2
 
       - name: Run lint
-        run: task lint-flake8
+        run: task lint-flake8 -v
 
   static-analysis:
     runs-on: ubuntu-latest
@@ -40,4 +40,4 @@ jobs:
         uses: arduino/setup-task@v2
 
       - name: Run static analysis
-        run: task lint-bandit
+        run: task lint-bandit -v
