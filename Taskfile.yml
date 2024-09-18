@@ -94,7 +94,7 @@ tasks:
       - "podman image exists $IMAGE:$TAG"
 
   lint:
-    desc: Run the linters
+    desc: Run all linters
     deps:
       - lint-flake8
       - lint-bandit
