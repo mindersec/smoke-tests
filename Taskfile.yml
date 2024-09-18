@@ -92,3 +92,51 @@ tasks:
       - requirements.txt
     status:
       - "podman image exists $IMAGE:$TAG"
+
+  lint:
+    desc: Run the linters
+    cmds:
+      - task: lint-flake8
+      - task: lint-bandit
+      # TODO: Add robot framework linter
+
+  lint-flake8:
+    desc: Run the flake8 linter
+    deps:
+      - venv
+    cmds:
+      - cmd: |
+          source .venv/bin/activate
+          flake8 resources/
+        silent: true
+
+  lint-bandit:
+    desc: Run the bandit linter
+    deps:
+      - venv
+    cmds:
+      - cmd: |
+          source .venv/bin/activate
+          bandit -r resources/
+        silent: true
+
+  venv:
+    desc: Create a virtual environment for python
+    cmds:
+      - python3 -m venv .venv
+      - |
+        . .venv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+      - cmd: echo -e "\n\nVirtual environment created successfully."
+        silent: true
+      - cmd: 'echo "To activate the virtual environment, run: source .venv/bin/activate"'
+        silent: true
+    sources:
+      - .venv
+      - requirements.txt
+      - requirements-dev.txt
+    preconditions:
+      - sh: "python3 --version"
+        msg: "Python 3 is required to create the virtual environment. Please install Python 3 and try again."
