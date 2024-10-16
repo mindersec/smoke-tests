@@ -47,6 +47,7 @@ tasks:
     cmds:
       - |
         {{._CONTAINER_CMD}} run {{._CONTAINER_OPTS}} \
+          --network=host \
           -v ./:$CTESTDIR \
           -v {{._MINDER_BINARY_PATH}}:/usr/bin/minder \
           {{if .MINDER_CONFIG}} -v {{.MINDER_CONFIG}}:/etc/minder/config.yaml {{end}} \
