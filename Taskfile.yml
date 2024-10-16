@@ -123,24 +123,24 @@ tasks:
         silent: true
 
   venv:
-    desc: Create a virtual environment for python
+    desc: Create a virtual environment for python3
     cmds:
       - cmd: |
           echo "* Creating a virtual environment..."
-          python -m venv .venv
+          python3 -m venv .venv
         silent: true
       - cmd: |
           echo "* Activating the virtual environment..."
           source .venv/bin/activate
 
           echo "* Installing dependencies..."
-          pip install --upgrade pip
+          pip3 install --upgrade pip
 
           echo "* Installing requirements..."
-          pip install -r requirements.txt
+          pip3 install -r requirements.txt
 
           echo "* Installing dev requirements..."
-          pip install -r requirements-dev.txt
+          pip3 install -r requirements-dev.txt
         silent: true
       - cmd: echo -e "\n\nVirtual environment created successfully."
         silent: true
@@ -151,5 +151,5 @@ tasks:
       - requirements.txt
       - requirements-dev.txt
     preconditions:
-      - sh: "python --version"
-        msg: "Python is required to create the virtual environment. Please install Python 3 and try again."
+      - sh: "python3 --version"
+        msg: "python3 is required to create the virtual environment. Please install Python 3 and try again."
