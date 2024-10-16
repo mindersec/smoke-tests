@@ -1,8 +1,8 @@
 from robot.api import logger
 from robot.libraries.BuiltIn import BuiltIn
 import json
-import os
 from sh import minder
+from resources.helpers import log_into_minder
 
 rf = BuiltIn()
 
@@ -10,8 +10,6 @@ rf = BuiltIn()
 # Constants
 #####################################################################
 
-# This is not a secret, but a path to a file that contains a secret
-MINDER_OFFLINE_TOKEN_PATH = 'MINDER_OFFLINE_TOKEN_PATH'  # nosec
 
 WHOAMI_OUT_KEY = 'whoami'
 PROVIDER_LIST_OUT_KEY = 'provider-list'
@@ -55,15 +53,7 @@ class minderlib(object):
         This keyword logs into Minder using the offline token. The offline
         token is stored in the MINDER_OFFLINE_TOKEN_PATH environment variable.
         """
-        logger.info('Logging into minder')
-        if MINDER_OFFLINE_TOKEN_PATH not in os.environ:
-            raise Exception(f'{MINDER_OFFLINE_TOKEN_PATH} env variable is not set')
-        tokenpath = os.environ[MINDER_OFFLINE_TOKEN_PATH]
-        if not tokenpath:
-            raise Exception(f'{MINDER_OFFLINE_TOKEN_PATH} env variable is empty')
-
-        logger.info(minder.auth('offline-token', 'use', '--file', tokenpath))
-        return True
+        return log_into_minder()
 
     def i_get_the_user_profile(self):
         """I get the user profile
