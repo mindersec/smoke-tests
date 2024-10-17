@@ -58,6 +58,7 @@ tasks:
           $IMAGE:$TAG \
           --outputdir $CTESTDIR/results \
           --pythonpath $CTESTDIR \
+          --xunit $CTESTDIR/results/xoutput.xml \
           {{if .CLI_ARGS}} {{.CLI_ARGS}}{{end}} $CTESTDIR/minder-tests
     requires:
       vars:
