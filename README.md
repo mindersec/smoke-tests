@@ -18,6 +18,45 @@ To run the tests, you can use the following command:
 task test
 ```
 
+Since the tests run in a container, they need a `minder` Linux binary in the path.
+If you're runninng on a non-Linux machine, you need to provide one with an environment variable:
+```bash
+MINDER_BINARY_PATH=/path/to/minder task test
+```
+
+### Authentication and environment selection
+
+The `task test` command will authenticate using an offline token, by default using the `offline.token` file in the current directory. If you want to test against a different environment, you need to provide a configuration file that contains the endpoints and credentials for the environments you want to test against.
+
+For example, to run the tests against the staging environment, you can use the following command:
+```bash
+MINDER_CONFIG=$(pwd)/staging-config.yaml MINDER_OFFLINE_TOKEN_PATH=$(pwd)/staging-offline.token task test
+```
+
+### Running against a local Minder instance
+
+Similar to the previous section, you can run the tests against a local Minder instance by providing a configuration file and offline token. One catch is that if you run the tests from a container, you need to use `host.docker.internal` as the hostname to access the local Minder instance from inside the container.
+
+```yaml
+http_server:
+  host: host.docker.internal
+  port: 8080
+grpc_server:
+  host: host.docker.internal
+  port: 8090
+  insecure: true
+
+identity:
+  cli:
+    issuer_url: http://localhost:8081
+    realm: stacklok
+    client_id: minder-cli
+```
+
+Confusingly, the `issuer_url` needs to be `localhost` as that corresponds to the hostname of the Keycloak instance inside the container.
+
+### Extra arguments
+
 You may also pass extra arguments to the `robot` command by using
 `--`. e.g. to run only the `smoke` tests:
 
