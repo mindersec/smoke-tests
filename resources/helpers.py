@@ -12,19 +12,25 @@ def _get_url_from_config(server_type):
     if not minder_config_path:
         raise Exception(f'{MINDER_CONFIG} environment variable is not set')
 
-    try:
-        with open(minder_config_path, 'r') as file:
-            config = yaml.safe_load(file)
+    with open(minder_config_path, 'r') as file:
+        config = yaml.safe_load(file)
 
-        host = config[f'{server_type}_server']['host']
-        port = config[f'{server_type}_server']['port']
+    host = config[f'{server_type}_server'].get('host', None)
+    if not host:
+        raise Exception(f"Missing expected configuration key: {server_type}_server.host")
+    port = config[f'{server_type}_server'].get('port', None)
 
-        if server_type == 'http':
-            return f"http://{host}:{port}"
-        else:
-            return f"{host}:{port}"
-    except KeyError as e:
-        raise Exception(f"Missing expected configuration key: {e}")
+    if server_type == 'http':
+        protocol = 'http://'
+        if port == 443:
+            protocol = 'https://'
+        if port is None:
+            return f"{protocol}{host}"
+        return f"{protocol}{host}:{port}"
+    else:
+        if port is None:
+            return host
+        return f"{host}:{port}"
 
 
 def get_rest_url_from_config():
