@@ -1,7 +1,9 @@
 *** Settings ***
+Library    resources.minderlib
 Library    resources.helpers
 Library    resources.projects.Projects
 Library    resources.providers.Providers
+Library    resources.ruletypes.Ruletypes
 Library    resources.minder_restapi_lib.MinderRestApiLib
 Library    resources.eval_results_service.EvalResultsService
 Library    OperatingSystem
@@ -31,6 +33,22 @@ Set Provider as Environment Variable with Test Name
 Remove Provider Environment Variable for Test
     [Documentation]    Remove the provider environment variable after the test.
     Remove Environment Variable    MINDER_PROVIDER
+
+Create Ruletypes
+    [Documentation]    Create the ruletypes for the current project.
+
+    Given I Am Logged Into Minder
+    Given Ruletypes Are Ready
+    When Ruletypes Are Created
+    Then Installed Ruletypes Are Listed
+
+Delete Ruletypes
+    [Documentation]    Delete the ruletypes for the current project.
+
+    Given I Am Logged Into Minder
+    Given Ruletypes Are Ready
+    When All Ruletypes Are Deleted
+    Then Installed Ruletypes Are Listed
 
 Set Project as Environment Variable with Test Name
     [Documentation]  Set the environment variable for the current test and log the test name.

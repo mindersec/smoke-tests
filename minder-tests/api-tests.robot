@@ -11,9 +11,20 @@ Library    RequestsLibrary
 Suite Setup       Set Rest Base URL and Provider Environment Variables
 Suite Teardown    Remove Provider Environment Variable
 
-Test Setup     Set Project as Environment Variable with Test Name
-Test Teardown  Remove Project Environment Variable for Test
+Test Setup      Create Project And Ruletypes
+Test Teardown   Delete Ruletypes And Project
 
+
+*** Keywords ***
+Create Project And Ruletypes
+    [Documentation]    Create the project and ruletypes for the current test.
+    Set Project as Environment Variable with Test Name
+    Create Ruletypes
+
+Delete Ruletypes And Project
+    [Documentation]    Delete the ruletypes and project for the current test.
+    Delete Ruletypes
+    Remove Project Environment Variable for Test
 
 *** Test Cases ***
 Test the User API with an authorized user
