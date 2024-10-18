@@ -7,6 +7,8 @@ dotenv:
 env:
   IMAGE: localhost/smoke-test-experiments
   TAG: latest
+  # Sets the hierarchical multitenancy entitlement for any project that has a parent_id unset
+  SET_HIERARCHICAL_SQL: "INSERT INTO entitlements (feature, project_id) VALUES ('project_hierarchy_operations_enabled', (SELECT id FROM projects WHERE parent_id IS NULL));"
 
 vars:
   _GLOBAL_CONTAINER_OPTS: -it --rm
@@ -155,3 +157,18 @@ tasks:
     preconditions:
       - sh: "python3 --version"
         msg: "python3 is required to create the virtual environment. Please install Python 3 and try again."
+
+  set-hierarchical-local:
+    desc: Enables hierarchical multitenancy for the given project with a local database
+    cmds:
+      - cmd: |
+          echo "Enabling subprojects for root projects..."
+          PGPASSWORD='postgres' psql -h localhost -p 5432 -U postgres -d minder -c "$SET_HIERARCHICAL_SQL"
+
+  set-hierarchical-docker:
+    desc: Enables hierarchical multitenancy for the given project with a docker database
+    cmds:
+      - cmd: |
+          echo "Enabling subprojects for root projects..."
+          docker exec -it postgres_container psql -h localhost -p 5432 -U postgres -d minder -c "$SET_HIERARCHICAL_SQL"
+
