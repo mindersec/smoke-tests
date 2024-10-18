@@ -8,20 +8,12 @@ Library    OperatingSystem
 Library    BuiltIn
 Library    RequestsLibrary
 
-Suite Setup    Set Rest Base URL From Config
+Suite Setup       Set Rest Base URL and Provider Environment Variables
+Suite Teardown    Remove Provider Environment Variable
 
-Test Setup    Set Provider and Project as Environment Variables with Test Name
-Test Teardown    Remove Provider and Project Environment Variables for Test
+Test Setup     Set Project as Environment Variable with Test Name
+Test Teardown  Remove Project Environment Variable for Test
 
-
-*** Keywords ***
-Set Provider and Project as Environment Variables with Test Name
-    Set Provider as Environment Variable with Test Name
-    Set Project as Environment Variable with Test Name
-
-Remove Provider and Project Environment Variables for Test
-    Remove Provider Environment Variable for Test
-    Remove Project Environment Variable for Test
 
 *** Test Cases ***
 Test the User API with an authorized user

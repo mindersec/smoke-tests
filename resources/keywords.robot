@@ -9,11 +9,18 @@ Library    BuiltIn
 Library    RequestsLibrary
 
 *** Keywords ***
+Set Rest Base URL and Provider Environment Variables
+    Set Rest Base URL From Config
+    Set Provider as Environment Variable with Test Name
+
+Remove Provider Environment Variable
+    Remove Provider Environment Variable for Test
+
 Set Rest Base URL From Config
     [Documentation]    Reads the BASE_URL from the config file and sets it for all tests.
     ${BASE_URL}=    Get Rest URL From Config
     Set Suite Variable    ${BASE_URL}
-    
+
 Set Provider as Environment Variable with Test Name
     [Documentation]    Set the MINDER_PROVIDER environment variable to the first github-app provider
 
