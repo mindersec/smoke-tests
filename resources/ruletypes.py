@@ -3,6 +3,7 @@ from sh import gh, minder
 from robot.api.deco import keyword
 from robot.api import logger
 
+
 class Ruletypes:
     def __init__(self):
         self.path = os.getenv("MINDER_RULETYPES_PATH")
@@ -52,4 +53,3 @@ class Ruletypes:
         Clone the ruletypes repository from GitHub.
         """
         logger.info(gh.repo.clone("mindersec/minder-rules-and-profiles", self.path))
-
