@@ -1,13 +1,17 @@
 import json
 import os
-
+import requests
 from robot.api.deco import keyword
 from robot.api import logger
 
-from resources.helpers import log_into_minder
+from resources.helpers import log_into_minder, get_rest_url_from_config
 
 
 class MinderRestApiLib:
+    def __init__(self):
+        self.base_url = get_rest_url_from_config()
+        self.api_endpoint = "/api/v1"
+
     @keyword
     def create_authorization_header(self):
         """Create Authorization Header
@@ -27,7 +31,6 @@ class MinderRestApiLib:
             with open(credentials_path, 'r') as f:
                 credentials = json.load(f)
 
-            # Extract the access token
             bearer_token = credentials.get('access_token')
             if not bearer_token:
                 raise Exception("No access_token found in credentials file")
@@ -38,3 +41,29 @@ class MinderRestApiLib:
             raise Exception(f"Credentials file not found: {credentials_path}")
         except json.JSONDecodeError:
             raise Exception(f"Failed to parse credentials file: {credentials_path}")
+
+    def _make_request(self, method, path, **kwargs):
+        url = f"{self.base_url}{self.api_endpoint}{path}"
+        headers = self.create_authorization_header()
+        headers.update(kwargs.pop('headers', {}))
+
+        logger.info(f"Sending {method} request to {url}")
+        try:
+            response = requests.request(method, url, headers=headers, **kwargs)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            logger.error(f"API request failed: {str(e)}")
+            raise
+
+    @keyword
+    def get_request(self, path, **kwargs):
+        return self._make_request('GET', path, **kwargs)
+
+    @keyword
+    def post_request(self, path, **kwargs):
+        return self._make_request('POST', path, **kwargs)
+
+    @keyword
+    def delete_request(self, path, **kwargs):
+        return self._make_request('DELETE', path, **kwargs)
