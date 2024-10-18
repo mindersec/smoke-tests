@@ -17,4 +17,7 @@ COPY --from=builder /usr/bin/gh /usr/bin/gh
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN mkdir /opt/minder-ruletypes
+ENV MINDER_RULETYPES_PATH=/opt/minder-ruletypes
+
 ENTRYPOINT ["robot"]
