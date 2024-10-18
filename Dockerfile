@@ -14,7 +14,16 @@ FROM python:3.12-slim AS base
 
 COPY --from=builder /usr/bin/gh /usr/bin/gh
 
+# Install git
+RUN apt-get update && \
+    apt-get install -y git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN mkdir /opt/minder-ruletypes
+ENV MINDER_RULETYPES_PATH=/opt/minder-ruletypes
 
 ENTRYPOINT ["robot"]

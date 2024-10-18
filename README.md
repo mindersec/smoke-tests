@@ -55,6 +55,13 @@ identity:
 
 Confusingly, the `issuer_url` needs to be `localhost` as that corresponds to the hostname of the Keycloak instance inside the container.
 
+### Using ruletypes from a local repository
+
+If you want to run the tests against a local Minder instance with ruletypes from a local repository, you can pass the path to the ruletypes directory as an environment variable.
+```bash
+MINDER_RULETYPES_PATH=$(pwd)/path/to/ruletypes task test
+```
+
 ### Extra arguments
 
 You may also pass extra arguments to the `robot` command by using

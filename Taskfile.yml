@@ -35,6 +35,8 @@ tasks:
       - MINDER_OFFLINE_TOKEN_PATH: The path to the offline token file. If not provided,
         the task will use the default offline token file in the current directory
         (./offline.token).
+      - MINDER_RULETYPES_PATH: The path to the ruletypes file. If not provided, the
+        tests will clone the ruletypes repository from GitHub.
       - CLI_ARGS: Additional arguments to pass to the robot command.
     cmds:
       - task: test-podman-or-docker
@@ -53,10 +55,12 @@ tasks:
           -v ./:$CTESTDIR \
           -v {{._MINDER_BINARY_PATH}}:/usr/bin/minder \
           {{if .MINDER_CONFIG}} -v {{.MINDER_CONFIG}}:/etc/minder/config.yaml {{end}} \
+          {{if .MINDER_RULETYPES_PATH}} -v {{.MINDER_RULETYPES_PATH}}:/opt/minder-ruletypes {{end}} \
           -v {{.MINDER_OFFLINE_TOKEN_PATH | default "./offline.token" }}:/opt/minder-offline.token \
           --mount type=tmpfs,destination=/.config \
           -e MINDER_OFFLINE_TOKEN_PATH=/opt/minder-offline.token \
           -e MINDER_CONFIG=/etc/minder/config.yaml \
+          -e GH_TOKEN=$(gh auth token) \
           $IMAGE:$TAG \
           --outputdir $CTESTDIR/results \
           --pythonpath $CTESTDIR \
