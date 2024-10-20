@@ -106,7 +106,7 @@ tasks:
     deps:
       - lint-flake8
       - lint-bandit
-      # TODO: Add robot framework linter
+      - lint-robot
 
   lint-flake8:
     desc: Run the flake8 linter
@@ -128,6 +128,28 @@ tasks:
           source .venv/bin/activate
           echo "Running bandit..."
           bandit -q -r resources/
+        silent: true
+
+  lint-robot:
+    desc: Run the robot linter
+    deps:
+      - venv
+    cmds:
+      - cmd: |
+          source .venv/bin/activate
+          echo "Running robot..."
+          robocop minder-tests/
+        silent: true
+
+  robot-tidy:
+    desc: Run the robot tidy command
+    deps:
+      - venv
+    cmds:
+      - cmd: |
+          source .venv/bin/activate
+          echo "Running robot tidy..."
+          robotidy minder-tests/
         silent: true
 
   venv:
