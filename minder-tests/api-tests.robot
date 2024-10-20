@@ -53,3 +53,11 @@ Test Evaluation Results API
     When Client Retrieves Eval Results
     Given Results Format Is Valid
     Then Results Are Empty
+
+Test Evaluation History API
+    [Documentation]    Test that we can retrieve and verify evaluation history
+    [Tags]    EvalHistoryService
+
+    When Client Retrieves Eval History
+    Given History Format Is Valid
+    Then History Is Empty
