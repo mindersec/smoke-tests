@@ -3,14 +3,18 @@ from robot.api import logger
 from robot.api.deco import keyword
 from resources.minder_restapi_lib import MinderRestApiLib
 
+
 class EvalHistoryError(Exception):
     """Base exception for EvalHistoryService errors."""
+
 
 class ConfigurationError(EvalHistoryError):
     """Raised when there's a configuration-related error."""
 
+
 class APIError(EvalHistoryError):
     """Raised when there's an error in the API request or response."""
+
 
 class EvalHistoryService:
     def __init__(self):
@@ -46,7 +50,7 @@ class EvalHistoryService:
             self.history = rest_api.get_request('/history', params=params)
         except Exception as e:
             raise APIError(f"API request failed: {str(e)}")
-        
+
     @keyword
     def history_format_is_valid(self):
         """
