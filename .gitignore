@@ -11,3 +11,9 @@ results/
 __pycache__/
 # ignore .venv
 .venv/
+# ignore config.yaml
+config.yaml
+# ignore log, output and report files
+log.html
+output.xml
+report.html

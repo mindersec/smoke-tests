@@ -6,6 +6,7 @@ Library    resources.providers.Providers
 Library    resources.ruletypes.Ruletypes
 Library    resources.minder_restapi_lib.MinderRestApiLib
 Library    resources.eval_results_service.EvalResultsService
+Library    resources.eval_history_service.EvalHistoryService
 Library    OperatingSystem
 Library    BuiltIn
 Library    RequestsLibrary
