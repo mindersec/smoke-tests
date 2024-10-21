@@ -42,6 +42,7 @@ class minderlib(object):
         # tracks certain command outputs that have been
         # executed
         self.__cmd_output = dict()
+        self.registered_repos = []
 
     #####################################################################
     # Keywords
@@ -145,6 +146,19 @@ class minderlib(object):
             return True
 
         raise Exception('No projects found')
+
+    def repo_is_registered(self, repo_name):
+        logger.info(f"Registering repository {repo_name}")
+        res = minder("repo", "register", "-n", repo_name)
+        logger.info(res)
+        self.registered_repos.append(repo_name)
+
+    def cleanup_minder_repos(self):
+        for repo_name in self.registered_repos:
+            try:
+                logger.info(minder("repo", "delete", "-n", repo_name))
+            except Exception as e:
+                logger.error(f"Failed deregistering repo {repo_name}: {e}")
 
     #####################################################################
     # Private methods / helpers
