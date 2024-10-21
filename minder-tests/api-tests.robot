@@ -9,6 +9,7 @@ Library    OperatingSystem
 Library    RequestsLibrary
 Library    resources.minder_restapi_lib.MinderRestApiLib
 Library    resources.eval_results_service.EvalResultsService
+Library    resources.rule_type_service.RuleTypeService
 
 Suite Setup       Set Rest Base URL And Provider Environment Variables
 Suite Teardown    Remove Provider Environment Variable
@@ -52,6 +53,15 @@ Test Evaluation History API
     When Client Retrieves Eval History
     Given History Format Is Valid
     Then History Is Empty
+
+Test Ruletype by name API
+    [Documentation]    Test that we can retrieve a ruletype by name
+    [Tags]    RuleTypeService
+
+    When Client Retrieves Ruletype By Name    license
+    Given Response Format Is Valid
+    Then ID Is Not Empty
+    And Display Name Is Not Empty
 
 *** Keywords ***
 Create Project And Ruletypes
