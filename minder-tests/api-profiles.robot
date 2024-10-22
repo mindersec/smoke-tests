@@ -23,6 +23,7 @@ Test Teardown    Default Teardown
 Default Setup
     Set Provider as Environment Variable with Test Name
     Set Project as Environment Variable with Test Name
+    Ruletypes are ready
     Ruletypes are created
 
 Default Teardown
