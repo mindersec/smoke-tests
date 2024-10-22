@@ -8,7 +8,7 @@ env:
   IMAGE: localhost/smoke-test-experiments
   TAG: latest
   # Sets the hierarchical multitenancy entitlement for any project that has a parent_id unset
-  SET_HIERARCHICAL_SQL: "INSERT INTO entitlements (feature, project_id) VALUES ('project_hierarchy_operations_enabled', (SELECT id FROM projects WHERE parent_id IS NULL));"
+  SET_HIERARCHICAL_SQL: "INSERT INTO entitlements (feature, project_id) VALUES ('project_hierarchy_operations_enabled', (SELECT id FROM projects WHERE parent_id IS NULL AND metadata->>'self_enrolled' = 'true'));"
 
 vars:
   _GLOBAL_CONTAINER_OPTS: -it --rm
