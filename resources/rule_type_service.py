@@ -4,18 +4,7 @@ from robot.api import logger
 from robot.api.deco import keyword
 
 from resources.minder_restapi_lib import MinderRestApiLib
-
-
-class RuleTypeError(Exception):
-    """Base exception for RuleTypeService errors."""
-
-
-class ConfigurationError(RuleTypeError):
-    """Raised when there's a configuration-related error."""
-
-
-class APIError(RuleTypeError):
-    """Raised when there's an error in the API request or response."""
+from resources.errors import ConfigurationError, APIError
 
 
 class RuleTypeService:

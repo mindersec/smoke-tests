@@ -2,18 +2,7 @@ import os
 from robot.api import logger
 from robot.api.deco import keyword
 from resources.minder_restapi_lib import MinderRestApiLib
-
-
-class RepositoriesError(Exception):
-    """Base exception for EvalResultsService errors."""
-
-
-class ConfigurationError(RepositoriesError):
-    """Raised when there's a configuration-related error."""
-
-
-class APIError(RepositoriesError):
-    """Raised when there's an error in the API request or response."""
+from resources.errors import ConfigurationError, APIError
 
 
 class RepositoriesService:
@@ -57,7 +46,7 @@ class RepositoriesService:
         return self.results
 
     @keyword
-    def results_format_is_valid(self):
+    def repository_list_format_is_valid(self):
         """Verifies the structure of the evaluation results.
 
         Args:
@@ -79,7 +68,7 @@ class RepositoriesService:
         logger.info("Evaluation results structure verified successfully")
 
     @keyword
-    def results_are_empty(self):
+    def repository_list_is_empty(self):
         """Verifies that the evaluation results are empty.
 
         Raises:
@@ -90,7 +79,7 @@ class RepositoriesService:
             raise ValueError("Results should be empty")
 
     @keyword
-    def results_length_equals(self, length):
+    def repository_list_length_equals(self, length):
         """Verifies that the evaluation results are of the given
         length.
 

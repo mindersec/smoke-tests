@@ -2,18 +2,7 @@ import os
 from robot.api import logger
 from robot.api.deco import keyword
 from resources.minder_restapi_lib import MinderRestApiLib
-
-
-class EvalHistoryError(Exception):
-    """Base exception for EvalHistoryService errors."""
-
-
-class ConfigurationError(EvalHistoryError):
-    """Raised when there's a configuration-related error."""
-
-
-class APIError(EvalHistoryError):
-    """Raised when there's an error in the API request or response."""
+from resources.errors import ConfigurationError, APIError
 
 
 class EvalHistoryService:

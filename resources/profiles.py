@@ -4,7 +4,7 @@ import os
 from robot.api import logger
 from robot.api.deco import keyword
 from resources.minder_restapi_lib import MinderRestApiLib
-from resources.projects import Projects
+from resources.errors import ConfigurationError
 
 
 class Profiles:
@@ -30,7 +30,7 @@ class Profiles:
                 "project": project,
             },
             "alert": alert_flag,
-            "remediate": alert_flag,
+            "remediate": remediate_flag,
             "repository": [
                 {
                     "type": "license",
