@@ -49,7 +49,9 @@ class MinderRestApiLib:
 
         logger.info(f"Sending {method} request to {url}")
         try:
+            logger.debug(f"Request: {kwargs}")
             response = requests.request(method, url, headers=headers, **kwargs)
+            logger.debug(f"Response: {response.json()}")
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
