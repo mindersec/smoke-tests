@@ -24,6 +24,19 @@ If you're runninng on a non-Linux machine, you need to provide one with an envir
 MINDER_BINARY_PATH=/path/to/minder task test
 ```
 
+It is necessary to specify what GitHub org to use in order to run
+tests that create, modify, or delete repositories and pull requests.
+
+It is possible to specify the org specifying
+`MINDER_TEST_ORG=<org-name>` when running `task test`, so the previous
+example becomes
+```bash
+MINDER_BINARY_PATH=/path/to/minder MINDER_TEST_ORG=my-org-name task test
+```
+
+See [Writing tests with real repos](#writing-tests-with-real-repos)
+section for instructions on how to create repos in a test org.
+
 ### Authentication and environment selection
 
 The `task test` command will authenticate using an offline token, by default using the `offline.token` file in the current directory. If you want to test against a different environment, you need to provide a configuration file that contains the endpoints and credentials for the environments you want to test against.
@@ -121,4 +134,24 @@ file or directory with the following structure:
 ```
 resources/
 ├── <library>.py
+```
+
+### Writing tests with real repos
+
+Currently, it is responsibility of the test guarantee test isolation
+by using the `Give random repo name <test-org> <name-prefix>` keyword,
+which returns a string composed of `<test-org>/<name-prefix>-XXXXXXX`,
+where the suffix is a 7 digit number determined at random.
+
+Once a random repo name is obtained, a copy of a template repository
+can be obtained using the `Given a copy of repo <upstream>
+<repo-name>` keyword.
+
+Used together in a test would look like the following
+
+```robot
+Test with repo
+    ${test_repo}=    Given random repo name    ${MINDER_TEST_ORG}    smoke-test-python
+    Given a copy of repo    stacklok/demo-repo-python    ${test_repo}
+    Then assert stuff on    ${test_repo}
 ```

@@ -60,6 +60,7 @@ tasks:
           --mount type=tmpfs,destination=/.config \
           -e MINDER_OFFLINE_TOKEN_PATH=/opt/minder-offline.token \
           -e MINDER_CONFIG=/etc/minder/config.yaml \
+          -e MINDER_TEST_ORG=$MINDER_TEST_ORG \
           -e GH_TOKEN=$(gh auth token) \
           $IMAGE:$TAG \
           --outputdir $CTESTDIR/results \
