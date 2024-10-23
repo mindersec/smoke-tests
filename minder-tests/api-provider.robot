@@ -1,18 +1,5 @@
 *** Settings ***
 Resource   resources/keywords.robot
-Resource   resources/variables.robot
-
-Library    OperatingSystem
-Library    BuiltIn
-Library    RequestsLibrary
-
-Library    resources.helpers
-Library    resources.projects.Projects
-Library    resources.providers.Providers
-Library    resources.ruletypes.Ruletypes
-Library    resources.profiles.Profiles
-Library    resources.minder_restapi_lib.MinderRestApiLib
-Library    resources.minderlib
 Library    resources.oauth_service.OAuthService
 
 Suite Setup    Set Rest Base URL From Config
