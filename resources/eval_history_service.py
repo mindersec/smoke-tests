@@ -73,7 +73,7 @@ class EvalHistoryService:
         """
         if self.history["data"]:
             raise ValueError("history should be empty")
-            
+
     @keyword
     def history_is_not_empty(self):
         """
