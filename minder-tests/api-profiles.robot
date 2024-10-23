@@ -32,15 +32,26 @@ Default Teardown
 
 *** Test Cases ***
 Test the List Profile API
-    [Documentation]    Test that we can create a profile
+    [Documentation]    Test that we can create a Profile
 
     ${profiles}=    When Client lists Profiles
     Then Profiles are empty    ${profiles}
 
 Test the Create Profile API
-    [Documentation]    Test that we can create a profile
+    [Documentation]    Test that we can create a Profile
 
     Given Client adds a Profile    test-profile
+    ${profiles}=    When Client Lists Profiles
+    Then Profiles are not empty    ${profiles}
+
+    [Teardown]    Run Keywords    Cleanup Minder Profiles
+    ...           AND    Default Teardown
+
+Test the Patch Profile API
+    [Documentation]    Test that we can modify an existing Profile
+
+    Given Client adds a Profile    test-profile
+    Given Client patches Profile    test-profile
     ${profiles}=    When Client Lists Profiles
     Then Profiles are not empty    ${profiles}
 

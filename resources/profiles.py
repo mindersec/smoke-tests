@@ -10,7 +10,7 @@ from resources.errors import ConfigurationError
 class Profiles:
     def __init__(self):
         self.rest_api = MinderRestApiLib()
-        self.profiles = []
+        self.profiles = dict()
 
     @keyword
     def client_adds_a_profile(self, profile_name, alert=False, remediate=False):
@@ -46,9 +46,36 @@ class Profiles:
 
         try:
             resp = self.rest_api.post_request("/profile", data=json.dumps({"profile": profile}))
-            self.profiles.append(resp["profile"]["id"])
+            self.profiles[resp["profile"]["name"]] = resp["profile"]
         except Exception as e:
             logger.error(f"Failed to create profile: {str(e)}")
+            raise
+
+    @keyword
+    def client_patches_profile(self, profile_name):
+        project = os.getenv("MINDER_PROJECT")
+        if not project:
+            raise ConfigurationError("MINDER_PROJECT environment variable is not set")
+
+        params = {
+            "context.project": project,
+        }
+
+        profile = self.profiles[profile_name]
+        if not profile:
+            raise ConfigurationError(f"No profile created for {profile_name}")
+
+        profile["repository"][0]["def"]["license_type"] = "BSD"
+
+        try:
+            resp = self.rest_api.patch_request(
+                f"/profile/{profile['id']}",
+                data=json.dumps(profile),
+                params=params,
+            )
+            self.profiles[resp["profile"]["name"]] = resp["profile"]
+        except Exception as e:
+            logger.error(f"Failed to patch profile: {str(e)}")
             raise
 
     @keyword
@@ -71,8 +98,9 @@ class Profiles:
     @keyword
     def cleanup_minder_profiles(self):
         """Deletes all created profiles."""
-        for profile_id in self.profiles:
-            self.delete_profile(profile_id)
+        for profile in self.profiles.values():
+            logger.info(f"cleaning up profile {profile}")
+            self.delete_profile(profile["id"])
 
     @keyword
     def client_lists_profiles(self):
