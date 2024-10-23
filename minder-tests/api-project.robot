@@ -16,8 +16,8 @@ Default Teardown
 
 *** Test Cases ***
 Test List Roles API
-    [Documentation]    Test that the authorization URL matches the GitHub App installation page
-    [Tags]    OAuthService
+    [Documentation]    Test the list of available roles in a project
+    [Tags]    ProjectsService
 
     ${roles}=    Given Client Lists Roles
     Then Role List Format Is Valid    ${roles}
