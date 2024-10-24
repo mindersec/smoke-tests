@@ -2,9 +2,9 @@ from robot.api import logger
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import re
-import hashlib
 import os
 from resources.minder_restapi_lib import MinderRestApiLib
+from resources import helpers
 
 
 class Projects:
@@ -132,11 +132,12 @@ class Projects:
         if name[0].isdigit():
             name = "p-" + name
 
-        # If the name is already 63 characters or less, return it as is
-        if len(name) <= 63:
-            return name
+        # If the name is already 63 - 8 characters or less, add random
+        # suffix and return it.
+        suffix = helpers.randint()
+        if len(name) <= 63 - 8:
+            return f"{name}-{suffix}"
 
-        # Otherwise, truncate and add suffix
-        suffix = hashlib.sha1(name.encode()).hexdigest()[:9]  # nosec
-        truncated_name = name[:53]
+        # Otherwise truncate
+        truncated_name = name[:55]
         return f"{truncated_name}-{suffix}"
