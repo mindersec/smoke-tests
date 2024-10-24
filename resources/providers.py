@@ -40,20 +40,18 @@ class Providers:
         top_level_project = self.projects.get_toplevel_project()
 
         # Prepare the request parameters
-        params = {
-            "context.project": top_level_project
-        }
+        params = {"context.project": top_level_project}
 
         # Make the GET request to /api/v1/providers
-        response = self.rest_api.get_request('/providers', params=params)
+        response = self.rest_api.get_request("/providers", params=params)
 
         # Extract the providers list from the response
-        providers = response.get('providers', [])
+        providers = response.get("providers", [])
 
         # Find the first github-app provider
         for provider in providers:
-            if provider.get('class') == 'github-app':
+            if provider.get("class") == "github-app":
                 logger.info(f"Found github-app provider: {provider['name']}")
-                return provider['name']
+                return provider["name"]
 
         raise ValueError("No github-app provider found")
