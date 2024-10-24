@@ -2,18 +2,9 @@
 Resource   resources/keywords.robot
 Resource   resources/variables.robot
 
-Library    OperatingSystem
-Library    BuiltIn
-Library    RequestsLibrary
-
 Library    resources.helpers
-Library    resources.projects.Projects
 Library    resources.profiles.Profiles
-Library    resources.ruletypes.Ruletypes
 Library    resources.github.GitHub
-Library    resources.minder_restapi_lib.MinderRestApiLib
-Library    resources.repositories_service.RepositoriesService
-Library    resources.eval_history_service.EvalHistoryService
 
 Suite Setup    Set Rest Base URL From Config
 
