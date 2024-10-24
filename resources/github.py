@@ -1,17 +1,7 @@
-import random
-import string
-
 from sh import gh
 from robot.api.deco import keyword
 from robot.api import logger
-
-
-def randstring(size=6, chars=string.ascii_uppercase + string.digits):
-    return "".join(random.choice(chars) for _ in range(size))  # nosec B311
-
-
-def randint():
-    return f"{random.randint(1000000, 9999999)}"  # nosec B311
+from resources import helpers
 
 
 class GitHub:
@@ -20,7 +10,7 @@ class GitHub:
 
     @keyword
     def random_repo_name(self, org, base_name):
-        return f"{org}/{base_name}-{randint()}"
+        return f"{org}/{base_name}-{helpers.randint()}"
 
     @keyword
     def a_copy_of_repo(self, repo_template, repo_name):

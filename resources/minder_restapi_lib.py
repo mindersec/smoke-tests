@@ -18,7 +18,7 @@ class MinderRestApiLib:
 
         Logs into Minder, extracts the Bearer token, and returns the Authorization header.
         """
-        log_into_minder()
+        log_into_minder()  # TODO remove this, it should be ensured by the above layer
         bearer_token = self._get_bearer_token()
 
         # Return the Authorization header

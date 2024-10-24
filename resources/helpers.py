@@ -1,4 +1,5 @@
 import os
+import random
 import yaml
 from sh import minder
 
@@ -8,6 +9,10 @@ from resources.constants import (
     MINDER_OFFLINE_TOKEN_PATH,
     MINDER_API_ENDPOINT,
 )
+
+
+def randint():
+    return f"{random.randint(1000000, 9999999)}"  # nosec B311
 
 
 def _get_url_from_config(server_type):
