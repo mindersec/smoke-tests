@@ -57,3 +57,8 @@ class GitHub:
                 repo_name,
             )
         )
+
+    @keyword
+    def clone_ruletypes_from_github(self, path):
+        """Clone the ruletypes repository from GitHub to the specified folder."""
+        logger.info(gh.repo.clone("mindersec/minder-rules-and-profiles", self.path))

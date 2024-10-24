@@ -21,13 +21,11 @@ Test Teardown   Default Teardown
 
 *** Keywords ***
 Default Setup
-    Set Provider as Environment Variable with Test Name
     Set Project as Environment Variable with Test Name
     ${MINDER_TEST_ORG}=    Get Environment Variable    MINDER_TEST_ORG
     Set Suite Variable    $MINDER_TEST_ORG
 
 Default Teardown
-    Remove Provider Environment Variable for Test
     Remove Project Environment Variable for Test
 
 *** Test Cases ***

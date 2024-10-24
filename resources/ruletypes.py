@@ -41,13 +41,6 @@ class Ruletypes:
         """
         logger.info(minder.ruletype.delete("--all", "--yes"))
 
-    @keyword
-    def installed_ruletypes_are_listed(self):
-        """
-        List the ruletypes from minder.
-        """
-        logger.info(minder.ruletype.list())
-
     def _clone_ruletypes_from_github(self):
         """
         Clone the ruletypes repository from GitHub.
