@@ -88,4 +88,4 @@ class RepositoriesService:
 
         """
         if not len(self.results["results"]) == int(length):
-            raise ValueError(f"Results should be {length} items long, was {len(self.results["results"])}")
+            raise ValueError(f"Results should be {length} items long, was {len(self.results['results'])}")
