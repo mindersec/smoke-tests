@@ -8,6 +8,9 @@ from resources.minder_restapi_lib import MinderRestApiLib
 
 
 class Projects:
+    def __init__(self):
+        self.rest_api = MinderRestApiLib()
+
     @keyword
     def create_minder_project_with_test_name(self):
         """Creates a project in Minder using the current test name, converted to a DNS-safe name."""
@@ -38,8 +41,7 @@ class Projects:
             Exception: If the API request fails or the expected project is not found.
         """
         try:
-            rest_api = MinderRestApiLib()
-            data = rest_api.get_request('/user')
+            data = self.rest_api.get_request('/user')
             logger.debug(f"Received response: {data}")
 
             for project in data.get('projects', []):
@@ -50,6 +52,37 @@ class Projects:
             raise Exception("No self-enrolled project found in the response")
         except Exception as e:
             raise Exception(f"Failed to get top-level project: {str(e)}")
+
+    @keyword
+    def client_lists_roles(self):
+        project_id = os.getenv("MINDER_PROJECT")
+        if not project_id:
+            raise ValueError("MINDER_PROJECT environment variable is not set")
+
+        params = {
+            "context.project": project_id
+        }
+
+        return self.rest_api.get_request("/permissions/roles", params=params)
+
+    @keyword
+    def role_list_format_is_valid(self, roles):
+        if "roles" not in roles:
+            return ValueError("Role list must be rooted under 'roles'")
+
+        for role in roles["roles"]:
+            if "name" not in role:
+                return ValueError("Role does not contain 'name' property")
+            if "displayName" not in role:
+                return ValueError("Role does not contain 'displayName' property")
+            if "description" not in role:
+                return ValueError("Role does not contain 'description' property")
+
+    @keyword
+    def role_list_contains(self, roles, role_name):
+        role_names = {role["name"] for role in roles["roles"]}
+        if role_name not in role_names:
+            raise ValueError(f"Role {role_name} is missing from roles list")
 
     def _create_project(self, name):
         """
@@ -73,8 +106,7 @@ class Projects:
         }
 
         # Make the POST request using MinderRestApiLib
-        rest_api = MinderRestApiLib()
-        response = rest_api.post_request('/projects', json=request_body)
+        response = self.rest_api.post_request('/projects', json=request_body)
 
         project_id = response.get('project', {}).get('projectId')
         if not project_id:
@@ -89,11 +121,10 @@ class Projects:
         Args:
             project_id (str): The UUID of the project to delete.
         """
-        rest_api = MinderRestApiLib()
         params = {
             "context.project": project_id
         }
-        response = rest_api.delete_request('/projects', params=params)
+        response = self.rest_api.delete_request('/projects', params=params)
         return response
 
     def _convert_to_dns_safe_name(self, name):
