@@ -28,10 +28,10 @@ class MinderRestApiLib:
         """Extracts the Bearer token from the credentials.json file."""
         credentials_path = os.path.expanduser("~/.config/minder/credentials.json")
         try:
-            with open(credentials_path, 'r') as f:
+            with open(credentials_path, "r") as f:
                 credentials = json.load(f)
 
-            bearer_token = credentials.get('access_token')
+            bearer_token = credentials.get("access_token")
             if not bearer_token:
                 raise Exception("No access_token found in credentials file")
 
@@ -45,13 +45,15 @@ class MinderRestApiLib:
     def _make_request(self, method, path, **kwargs):
         url = f"{self.base_url}{self.api_endpoint}{path}"
         headers = self.create_authorization_header()
-        headers.update(kwargs.pop('headers', {}))
+        headers.update(kwargs.pop("headers", {}))
 
         logger.info(f"Sending {method} request to {url}")
         try:
             logger.debug(f"Request: {kwargs}")
             response = requests.request(method, url, headers=headers, **kwargs)
-            logger.debug(f"Request ID: \'{response.headers['grpc-metadata-request-id']}\'")
+            logger.debug(
+                f"Request ID: '{response.headers['grpc-metadata-request-id']}'"
+            )
             logger.debug(f"Response: {response.json()}")
             response.raise_for_status()
             return response.json()
@@ -61,16 +63,16 @@ class MinderRestApiLib:
 
     @keyword
     def get_request(self, path, **kwargs):
-        return self._make_request('GET', path, **kwargs)
+        return self._make_request("GET", path, **kwargs)
 
     @keyword
     def post_request(self, path, **kwargs):
-        return self._make_request('POST', path, **kwargs)
+        return self._make_request("POST", path, **kwargs)
 
     @keyword
     def patch_request(self, path, **kwargs):
-        return self._make_request('PATCH', path, **kwargs)
+        return self._make_request("PATCH", path, **kwargs)
 
     @keyword
     def delete_request(self, path, **kwargs):
-        return self._make_request('DELETE', path, **kwargs)
+        return self._make_request("DELETE", path, **kwargs)

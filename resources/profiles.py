@@ -45,7 +45,9 @@ class Profiles:
         }
 
         try:
-            resp = self.rest_api.post_request("/profile", data=json.dumps({"profile": profile}))
+            resp = self.rest_api.post_request(
+                "/profile", data=json.dumps({"profile": profile})
+            )
             self.profiles[resp["profile"]["name"]] = resp["profile"]
         except Exception as e:
             logger.error(f"Failed to create profile: {str(e)}")
@@ -90,7 +92,9 @@ class Profiles:
         }
 
         try:
-            logger.info(self.rest_api.delete_request(f"/profile/{profile_id}", params=params))
+            logger.info(
+                self.rest_api.delete_request(f"/profile/{profile_id}", params=params)
+            )
         except Exception as e:
             logger.error(f"Failed to create profile: {str(e)}")
             raise

@@ -34,12 +34,12 @@ class OAuthService:
         params = {
             # "provider": provider,
             "context.project": project,
-            "provider_class": provider_class
+            "provider_class": provider_class,
         }
 
         try:
             rest_api = MinderRestApiLib()
-            self.response = rest_api.get_request('/auth/url', params=params)
+            self.response = rest_api.get_request("/auth/url", params=params)
         except Exception as e:
             raise APIError(f"API request failed: {str(e)}")
 

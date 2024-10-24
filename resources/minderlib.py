@@ -11,9 +11,9 @@ rf = BuiltIn()
 #####################################################################
 
 
-WHOAMI_OUT_KEY = 'whoami'
-PROVIDER_LIST_OUT_KEY = 'provider-list'
-PROJECT_LIST_OUT_KEY = 'project-list'
+WHOAMI_OUT_KEY = "whoami"
+PROVIDER_LIST_OUT_KEY = "provider-list"
+PROJECT_LIST_OUT_KEY = "project-list"
 
 
 #####################################################################
@@ -37,6 +37,7 @@ class minderlib(object):
     This is safe because a single test case runs serially and the class is
     instantiated for each test case.
     """
+
     def __init__(self):
         # cmd_output is a list of string identifiers that
         # tracks certain command outputs that have been
@@ -63,8 +64,8 @@ class minderlib(object):
         It stores the output in the __cmd_output dictionary using the constant
         WHOAMI_OUT_KEY as the key.
         """
-        logger.info('Getting user profile')
-        self.__cmd_output[WHOAMI_OUT_KEY] = minder.auth('whoami')
+        logger.info("Getting user profile")
+        self.__cmd_output[WHOAMI_OUT_KEY] = minder.auth("whoami")
         logger.info(self.__cmd_output[WHOAMI_OUT_KEY])
         return self.__cmd_output[WHOAMI_OUT_KEY]
 
@@ -78,11 +79,11 @@ class minderlib(object):
         Note that this requires the WHOAMI_OUT_KEY to be present in the
         __cmd_output dictionary. If it is not, an exception is raised.
         """
-        logger.info('Checking minder server')
+        logger.info("Checking minder server")
         self.__assert_cmd_output(WHOAMI_OUT_KEY)
 
         if server not in self.__cmd_output[WHOAMI_OUT_KEY]:
-            raise Exception('No auth info available')
+            raise Exception("No auth info available")
 
         for line in self.__cmd_output[WHOAMI_OUT_KEY].splitlines():
             if server in line:
@@ -95,7 +96,7 @@ class minderlib(object):
         of the `provider list` subcommand is stored in the __cmd_output dictionary
         using the constant PROVIDER_LIST_OUT_KEY as the key.
         """
-        return self.__list_minder_resources('provider', PROVIDER_LIST_OUT_KEY)
+        return self.__list_minder_resources("provider", PROVIDER_LIST_OUT_KEY)
 
     def i_list_my_projects(self):
         """I list my projects
@@ -103,7 +104,7 @@ class minderlib(object):
         This keyword lists the projects that the user has access to. The output
         of the `project list` subcommand is stored in the __cmd_output dictionary
         using the constant PROJECT_LIST_OUT_KEY as the key."""
-        return self.__list_minder_resources('project', PROJECT_LIST_OUT_KEY)
+        return self.__list_minder_resources("project", PROJECT_LIST_OUT_KEY)
 
     def i_should_have_at_least_one_provider_of_class(self, provider_class):
         """I should have at least one provider of class
@@ -114,18 +115,18 @@ class minderlib(object):
 
         Note that this requires the PROVIDER_LIST_OUT_KEY to be present in the
         __cmd_output dictionary. If it is not, an exception is raised."""
-        logger.info('Checking provider class')
+        logger.info("Checking provider class")
         self.__assert_cmd_output(PROVIDER_LIST_OUT_KEY)
 
         list_out = self.__cmd_output[PROVIDER_LIST_OUT_KEY]
-        if 'providers' not in list_out:
-            raise Exception('No providers found')
+        if "providers" not in list_out:
+            raise Exception("No providers found")
 
-        for provider in list_out['providers']:
-            if 'class' in provider and provider['class'] == provider_class:
+        for provider in list_out["providers"]:
+            if "class" in provider and provider["class"] == provider_class:
                 return True
 
-        raise Exception(f'No provider of class {provider_class} found')
+        raise Exception(f"No provider of class {provider_class} found")
 
     def i_should_have_at_least_one_project(self):
         """I should have at least one project
@@ -135,17 +136,17 @@ class minderlib(object):
 
         Note that this requires the PROJECT_LIST_OUT_KEY to be present in the
         __cmd_output dictionary. If it is not, an exception is raised."""
-        logger.info('Checking project')
+        logger.info("Checking project")
         self.__assert_cmd_output(PROJECT_LIST_OUT_KEY)
 
         list_out = self.__cmd_output[PROJECT_LIST_OUT_KEY]
-        if 'projects' not in list_out:
-            raise Exception('No projects found')
+        if "projects" not in list_out:
+            raise Exception("No projects found")
 
-        if len(list_out['projects']) > 0:
+        if len(list_out["projects"]) > 0:
             return True
 
-        raise Exception('No projects found')
+        raise Exception("No projects found")
 
     def repo_is_registered(self, repo_name):
         logger.info(f"Registering repository {repo_name}")
@@ -171,19 +172,21 @@ class minderlib(object):
         type is passed as an argument to the method. The output of the command
         is stored in the __cmd_output dictionary using the output_key as the key.
         """
-        logger.info(f'Listing {resource_type}s')
-        resource_list = minder(resource_type, 'list', '-o', 'json')
+        logger.info(f"Listing {resource_type}s")
+        resource_list = minder(resource_type, "list", "-o", "json")
         logger.info(resource_list)
-        self.__cmd_output[output_key] = self.__parse_json(f'{resource_type}-list', resource_list)
+        self.__cmd_output[output_key] = self.__parse_json(
+            f"{resource_type}-list", resource_list
+        )
         return True
 
     def __assert_cmd_output(self, identifier: str):
         if identifier not in self.__cmd_output:
-            raise Exception(f'No {identifier} output available')
+            raise Exception(f"No {identifier} output available")
 
     @staticmethod
     def __parse_json(identifier: str, output: str):
         try:
             return json.loads(output)
         except Exception as e:
-            raise Exception(f'Failed to parse {identifier}: {e}')
+            raise Exception(f"Failed to parse {identifier}: {e}")

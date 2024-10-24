@@ -3,7 +3,12 @@ from robot.api import logger
 from robot.api.deco import keyword
 from resources.minder_restapi_lib import MinderRestApiLib
 from resources.errors import ConfigurationError, APIError
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_exponential,
+    retry_if_exception_type,
+)
 
 
 class EvalHistoryService:
@@ -30,14 +35,11 @@ class EvalHistoryService:
         if not provider:
             raise ConfigurationError("MINDER_PROVIDER environment variable is not set")
 
-        params = {
-            "provider": provider,
-            "context.project": project
-        }
+        params = {"provider": provider, "context.project": project}
 
         try:
             rest_api = MinderRestApiLib()
-            self.history = rest_api.get_request('/history', params=params)
+            self.history = rest_api.get_request("/history", params=params)
         except Exception as e:
             raise APIError(f"API request failed: {str(e)}")
 
@@ -90,7 +92,7 @@ class EvalHistoryService:
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=1, max=10),
         retry=(retry_if_exception_type(APIError) | retry_if_exception_type(ValueError)),
-        reraise=True
+        reraise=True,
     )
     def client_retrieves_non_empty_eval_history(self):
         """
@@ -113,14 +115,11 @@ class EvalHistoryService:
         if not provider:
             raise ConfigurationError("MINDER_PROVIDER environment variable is not set")
 
-        params = {
-            "provider": provider,
-            "context.project": project
-        }
+        params = {"provider": provider, "context.project": project}
 
         try:
             rest_api = MinderRestApiLib()
-            self.history = rest_api.get_request('/history', params=params)
+            self.history = rest_api.get_request("/history", params=params)
             if not self.history or not self.history.get("data"):
                 raise ValueError("Retrieved history is empty")
         except Exception as e:
@@ -173,14 +172,11 @@ class EvalHistoryService:
         if not provider:
             raise ConfigurationError("MINDER_PROVIDER environment variable is not set")
 
-        params = {
-            "provider": provider,
-            "context.project": project
-        }
+        params = {"provider": provider, "context.project": project}
 
         try:
             rest_api = MinderRestApiLib()
-            response = rest_api.get_request(f'/history/{history_id}', params=params)
+            response = rest_api.get_request(f"/history/{history_id}", params=params)
             return response
         except Exception as e:
             raise APIError(f"API request failed: {str(e)}")

@@ -36,7 +36,7 @@ class RepositoriesService:
         }
 
         try:
-            self.results = self.rest_api.get_request('/repositories', params=params)
+            self.results = self.rest_api.get_request("/repositories", params=params)
         except Exception as e:
             raise APIError(f"API request failed: {str(e)}")
 
@@ -88,4 +88,6 @@ class RepositoriesService:
 
         """
         if not len(self.results["results"]) == int(length):
-            raise ValueError(f"Results should be {length} items long, was {len(self.results['results'])}")
+            raise ValueError(
+                f"Results should be {length} items long, was {len(self.results['results'])}"
+            )

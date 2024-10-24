@@ -29,14 +29,11 @@ class EvalResultsService:
         if not provider:
             raise ConfigurationError("MINDER_PROVIDER environment variable is not set")
 
-        params = {
-            "provider": provider,
-            "context.project": project
-        }
+        params = {"provider": provider, "context.project": project}
 
         try:
             rest_api = MinderRestApiLib()
-            self.results = rest_api.get_request('/results', params=params)
+            self.results = rest_api.get_request("/results", params=params)
         except Exception as e:
             raise APIError(f"API request failed: {str(e)}")
 
