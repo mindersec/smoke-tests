@@ -12,10 +12,14 @@ Library    BuiltIn
 Library    RequestsLibrary
 
 *** Keywords ***
-Set Rest Base URL From Config
-    [Documentation]    Reads the BASE_URL from the config file and sets it for all tests.
+Load Config
+    [Documentation]    Reads tests' config file and sets useful variables for all tests.
     ${BASE_URL}=    Get Rest URL From Config
     Set Suite Variable    ${BASE_URL}
+    ${root_project}=    Get Environment Variable    MINDER_PROJECT
+    Set Suite Variable    ${root_project}
+    ${GRPC_BASE_URL}=    Get Grpc URL From Config
+    Set Suite Variable    ${GRPC_BASE_URL}
 
 Create Ruletypes
     [Documentation]    Create the ruletypes for the current project.
@@ -39,4 +43,4 @@ Set Project as Environment Variable With Test Name
 Remove Project Environment Variable For Test
     [Documentation]    Remove the environment variable after the test.
     Remove Minder Project With Test Name
-    Remove Environment Variable    MINDER_PROJECT
+    Set Environment Variable    MINDER_PROJECT    ${root_project}

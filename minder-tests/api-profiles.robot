@@ -14,7 +14,7 @@ Library    resources.profiles.Profiles
 Library    resources.minder_restapi_lib.MinderRestApiLib
 Library    resources.minderlib
 
-Suite Setup    Set Rest Base URL From Config
+Suite Setup    Load Config
 
 Test Setup    Default Setup
 Test Teardown    Default Teardown

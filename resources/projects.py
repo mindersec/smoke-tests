@@ -1,4 +1,3 @@
-from robot.api import logger
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 import re
@@ -40,20 +39,12 @@ class Projects:
         Raises:
             Exception: If the API request fails or the expected project is not found.
         """
-        try:
-            data = self.rest_api.get_request("/user")
-            logger.debug(f"Received response: {data}")
-
-            for project in data.get("projects", []):
-                if project.get("description") == "A self-enrolled project.":
-                    logger.info(
-                        f"Found self-enrolled project with UUID: {project['projectId']}"
-                    )
-                    return project["projectId"]
-
-            raise Exception("No self-enrolled project found in the response")
-        except Exception as e:
-            raise Exception(f"Failed to get top-level project: {str(e)}")
+        project_id = BuiltIn().get_variable_value("${root_project}")
+        if project_id is None:
+            raise Exception("Variable ${root_project} is not set")
+        if project_id == "":
+            raise Exception("Variable ${root_project} is empty")
+        return project_id
 
     @keyword
     def client_lists_roles(self):

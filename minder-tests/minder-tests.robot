@@ -3,10 +3,13 @@ Documentation    Test suite for some simple Minder operations
 
 Test Tags    smoke
 
-Library         resources.helpers
-Library         resources/minderlib.py
+Resource   resources/keywords.robot
+Resource   resources/variables.robot
 
-Suite Setup     Set Grpc Base URL From Config
+Library    resources.helpers
+Library    resources.minderlib
+
+Suite Setup    Load Config
 
 
 *** Variables ***
@@ -36,10 +39,3 @@ Project created
     Given I Am Logged Into Minder
     When I List My Projects
     Then I Should Have At Least One Project
-
-
-*** Keywords ***
-Set Grpc Base URL From Config
-    [Documentation]    Reads the GRPC_BASE_URL from the config file and sets it for all tests.
-    ${GRPC_BASE_URL}=    Get Grpc URL From Config
-    Set Suite Variable    ${GRPC_BASE_URL}

@@ -6,7 +6,7 @@ Library    resources.helpers
 Library    resources.profiles.Profiles
 Library    resources.github.GitHub
 
-Suite Setup    Set Rest Base URL From Config
+Suite Setup    Load Config
 
 Test Setup      Default Setup
 Test Teardown   Default Teardown
