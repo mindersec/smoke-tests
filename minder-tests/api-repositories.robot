@@ -14,7 +14,7 @@ Library    resources.repositories_service.RepositoriesService
 Library    resources.github.GitHub
 Library    resources.minderlib
 
-Suite Setup    Set Rest Base URL From Config
+Suite Setup    Load Config
 
 Test Setup      Default Setup
 Test Teardown   Default Teardown

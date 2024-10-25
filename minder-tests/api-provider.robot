@@ -2,7 +2,7 @@
 Resource   resources/keywords.robot
 Library    resources.oauth_service.OAuthService
 
-Suite Setup    Set Rest Base URL From Config
+Suite Setup    Load Config
 
 Test Setup    Default Setup
 Test Teardown    Default Teardown
