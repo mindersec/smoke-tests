@@ -11,8 +11,7 @@ Library    resources.minder_restapi_lib.MinderRestApiLib
 Library    resources.eval_results_service.EvalResultsService
 Library    resources.rule_type_service.RuleTypeService
 
-Suite Setup       Set Rest Base URL And Provider Environment Variables
-Suite Teardown    Remove Provider Environment Variable
+Suite Setup       Set Rest Base URL From Config
 
 Test Setup      Create Project And Ruletypes
 Test Teardown   Delete Ruletypes And Project

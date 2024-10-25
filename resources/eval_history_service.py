@@ -31,11 +31,7 @@ class EvalHistoryService:
         if not project:
             raise ConfigurationError("MINDER_PROJECT environment variable is not set")
 
-        provider = os.getenv("MINDER_PROVIDER")
-        if not provider:
-            raise ConfigurationError("MINDER_PROVIDER environment variable is not set")
-
-        params = {"provider": provider, "context.project": project}
+        params = {"context.project": project}
 
         try:
             rest_api = MinderRestApiLib()
@@ -111,11 +107,7 @@ class EvalHistoryService:
         if not project:
             raise ConfigurationError("MINDER_PROJECT environment variable is not set")
 
-        provider = os.getenv("MINDER_PROVIDER")
-        if not provider:
-            raise ConfigurationError("MINDER_PROVIDER environment variable is not set")
-
-        params = {"provider": provider, "context.project": project}
+        params = {"context.project": project}
 
         try:
             rest_api = MinderRestApiLib()
@@ -168,11 +160,7 @@ class EvalHistoryService:
         if not project:
             raise ConfigurationError("MINDER_PROJECT environment variable is not set")
 
-        provider = os.getenv("MINDER_PROVIDER")
-        if not provider:
-            raise ConfigurationError("MINDER_PROVIDER environment variable is not set")
-
-        params = {"provider": provider, "context.project": project}
+        params = {"context.project": project}
 
         try:
             rest_api = MinderRestApiLib()
