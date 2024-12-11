@@ -23,6 +23,7 @@ Test Teardown    Default Teardown
 Default Setup
     Set Project as Environment Variable with Test Name
     Ruletypes are ready
+    Datasources are created
     Ruletypes are created
 
 Default Teardown

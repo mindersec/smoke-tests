@@ -15,6 +15,7 @@ Test Teardown   Default Teardown
 Default Setup
     Set Project as Environment Variable with Test Name
     Ruletypes are ready
+    Datasources are created
     Ruletypes are created
     ${MINDER_TEST_ORG}=    Get Environment Variable    MINDER_TEST_ORG
     Set Suite Variable    $MINDER_TEST_ORG

@@ -41,6 +41,14 @@ class Ruletypes:
         """
         logger.info(minder.ruletype.delete("--all", "--yes"))
 
+    @keyword
+    def datasources_are_created(self):
+        """
+        Ensure that we have the datasources repository.
+        """
+        datasources = os.path.join(self.path, "data-sources")
+        minder.datasource.create(f=datasources)
+
     def _clone_ruletypes_from_github(self):
         """
         Clone the ruletypes repository from GitHub.

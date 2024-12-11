@@ -26,6 +26,7 @@ Create Ruletypes
 
     Given I Am Logged Into Minder
     Given Ruletypes Are Ready
+    When Datasources Are Created
     When Ruletypes Are Created
 
 Delete Ruletypes
