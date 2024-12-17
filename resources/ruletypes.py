@@ -1,3 +1,4 @@
+import json
 import os
 from sh import gh, minder
 from robot.api.deco import keyword
@@ -48,6 +49,21 @@ class Ruletypes:
         """
         datasources = os.path.join(self.path, "data-sources")
         minder.datasource.create(f=datasources)
+
+    @keyword
+    def all_datasources_are_deleted(self):
+        """
+        Remove all datasources from minder.
+        """
+        res = minder.datasource.list("-o", "json")
+
+        if "dataSources" not in res:
+            return ValueError("Datasources list is malformed")
+
+        parsed = json.loads(res)
+
+        for ds in parsed["dataSources"]:
+            minder.datasource.delete("-n", ds["name"])
 
     def _clone_ruletypes_from_github(self):
         """

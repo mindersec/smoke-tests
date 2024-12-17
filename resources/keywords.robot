@@ -35,6 +35,7 @@ Delete Ruletypes
     Given I Am Logged Into Minder
     Given Ruletypes Are Ready
     When All Ruletypes Are Deleted
+    When All Datasources Are Deleted
 
 Set Project as Environment Variable With Test Name
     [Documentation]  Set the environment variable for the current test and log the test name.
