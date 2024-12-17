@@ -52,7 +52,7 @@ class MinderRestApiLib:
             logger.debug(f"Request: {kwargs}")
             response = requests.request(method, url, headers=headers, **kwargs)
             logger.debug(
-                f"Request ID: '{response.headers['grpc-metadata-request-id']}'"
+                f"Request ID: '{response.headers.get('grpc-metadata-request-id')}'"
             )
             logger.debug(f"Response: {response.json()}")
             response.raise_for_status()
