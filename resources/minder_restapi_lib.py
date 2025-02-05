@@ -74,5 +74,9 @@ class MinderRestApiLib:
         return self._make_request("PATCH", path, **kwargs)
 
     @keyword
+    def put_request(self, path, **kwargs):
+        return self._make_request("PUT", path, **kwargs)
+
+    @keyword
     def delete_request(self, path, **kwargs):
         return self._make_request("DELETE", path, **kwargs)
