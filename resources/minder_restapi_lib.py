@@ -54,11 +54,11 @@ class MinderRestApiLib:
             logger.debug(
                 f"Request ID: '{response.headers.get('grpc-metadata-request-id')}'"
             )
-            logger.debug(f"Response: {response.json()}")
             response.raise_for_status()
+            logger.debug(f"Response: {response.json()}")
             return response.json()
         except requests.RequestException as e:
-            logger.error(f"API request failed: {str(e)}")
+            logger.error(f"API request to {url} failed: {str(e)}")
             raise
 
     @keyword
