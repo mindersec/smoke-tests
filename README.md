@@ -1,6 +1,6 @@
-## Stacklok QA
+## Minder Smoke Tests
 
-This repo aims to be home to tests and automation for Stacklok in general.
+This repo provides smoke tests for validating the functionality of a Minder installation.
 
 Tests are written using the [Robot Framework](https://robotframework.org/) with
 Python as a helper language for writing custom libraries.
